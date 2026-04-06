@@ -18,9 +18,12 @@ export HF_HUB_CACHE=/gpfs/work4/0/gus20642/dwu18/cache
 export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
 TTokens=$1
+OPENAI_KEY=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
 
 ### s1 Budget Forcing ###
-OPENAI_API_KEY=YOUR_OPENAI_KEY PROCESSOR=gpt-4o-mini lm_eval --model vllm --model_args pretrained=simplescaling/s1-32B,tokenizer=Qwen/Qwen2.5-32B-Instruct,dtype=float32,tensor_parallel_size=8 --tasks aime24_figures,aime24_nofigures,openai_math,gpqa_diamond_openai --batch_size auto --apply_chat_template --output_path forcing1k --log_samples --gen_kwargs "max_gen_toks=32768,max_tokens_thinking=$TTokens"
+OPENAI_API_KEY=$OPENAI_KEY PROCESSOR=gpt-4o-mini lm_eval --model vllm --model_args pretrained=simplescaling/s1-32B,tokenizer=Qwen/Qwen2.5-32B-Instruct,dtype=float32,tensor_parallel_size=2 --tasks aime24_figures --batch_size auto --apply_chat_template --output_path forcing/forcing-${TTokens} --log_samples --gen_kwargs "max_gen_toks=32768,max_tokens_thinking=$TTokens"
+
+# OPENAI_API_KEY=$OPENAI_KEY PROCESSOR=gpt-4o-mini lm_eval --model vllm --model_args pretrained=simplescaling/s1-32B,tokenizer=Qwen/Qwen2.5-32B-Instruct,dtype=float32,tensor_parallel_size=2 --tasks aime24_figures,aime24_nofigures,openai_math,gpqa_diamond_openai --batch_size auto --apply_chat_template --output_path forcing/forcing-${TTokens} --log_samples --gen_kwargs "max_gen_toks=32768,max_tokens_thinking=$TTokens"
 
 # OPENAI_API_KEY=YOUR_OPENAI_KEY PROCESSOR=gpt-4o-mini lm_eval --model vllm --model_args pretrained=simplescaling/s1-32B,tokenizer=Qwen/Qwen2.5-32B-Instruct,dtype=float32,tensor_parallel_size=8 --tasks aime24_figures,aime24_nofigures,openai_math,gpqa_diamond_openai --batch_size auto --apply_chat_template --output_path forcing1k --log_samples --gen_kwargs "max_gen_toks=32768,max_tokens_thinking=1000"
 # OPENAI_API_KEY=YOUR_OPENAI_KEY PROCESSOR=gpt-4o-mini lm_eval --model vllm --model_args pretrained=simplescaling/s1-32B,tokenizer=Qwen/Qwen2.5-32B-Instruct,dtype=float32,tensor_parallel_size=8 --tasks aime24_figures,aime24_nofigures,openai_math,gpqa_diamond_openai --batch_size auto --apply_chat_template --output_path forcing2k --log_samples --gen_kwargs "max_gen_toks=32768,max_tokens_thinking=2000"
